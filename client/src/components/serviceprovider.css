@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+  
+.card {
+    background-color: white; /* White background for card */
+    border-radius: 10px; /* Rounded edges */
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for card */
+    flex: 1 1 30%; /* Responsive sizing for the cards */
+    text-align: center; /* Center the text */
+}
+  
+.icon-container {
+    background-color: lightblue; /* Light blue background for icon */
+    border-radius: 50%; /* Round the icon container */
+    padding: 10px; /* Space around the icon */
+    display: inline-flex; /* Ensures container size fits icon */
+    align-items: center; /* Center the icon vertically */
+    justify-content: center; /* Center the icon horizontally */
+    width: 60px; /* Set fixed width for container */
+    height: 60px; /* Set fixed height for container */
+}
+  
+.provider-icon {
+    color: black; /* Icon color */
+    font-size: 24px; /* Adjust size of the icon (smaller than before) */
+}

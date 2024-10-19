@@ -1,0 +1,65 @@
+/* General styles for the main container */
+.main-container {
+    background-color: #f9f9f9; /* Light background for contrast */
+    border-radius: 8px; /* Rounded corners for the main container */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 20px; /* Padding around the content */
+  }
+  
+  /* Styles for each data grid box */
+  .data-grid-box {
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px; /* Padding for the box */
+    margin-bottom: 20px; /* Space between boxes */
+    background-color: #ffffff; /* White background for data grids */
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  /* Typography styles */
+  h5 {
+    color: #333; /* Darker text for headings */
+    font-weight: 600; /* Semi-bold font weight */
+  }
+  
+  /* Input fields */
+  .MuiTextField-root {
+    margin-bottom: 15px; /* Space below input fields */
+  }
+  
+  /* Button styles */
+  .MuiButton-contained {
+    background-color: #1976d2; /* Primary color */
+    color: white; /* White text on buttons */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+  
+  .MuiButton-contained:hover {
+    background-color: #1565c0; /* Darker shade on hover */
+  }
+  
+  /* DataGrid specific styles */
+  .MuiDataGrid-root {
+    border: none; /* Remove default border */
+  }
+  
+  .MuiDataGrid-cell {
+    border-bottom: 1px solid #e0e0e0; /* Subtle border between rows */
+  }
+  
+  /* Hover effect for DataGrid rows */
+  .MuiDataGrid-row:hover {
+    background-color: #f1f1f1; /* Light gray background on hover */
+  }
+  
+  /* Custom styles for the filter section */
+  .filter-section {
+    display: flex; /* Flexbox for layout */
+    justify-content: space-between; /* Space between elements */
+    margin-bottom: 20px; /* Space below the filter section */
+  }
+  
+  .filter-section .MuiTextField-root {
+    width: 300px; /* Fixed width for input fields */
+  }
+  
