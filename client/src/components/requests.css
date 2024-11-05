@@ -1,0 +1,39 @@
+/* RequestData.css */
+
+.user-data-container {
+    padding: 20px; /* Add padding around the container */
+    background-color: #f9f9f9; /* Light background color for contrast */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.user-data-container h1 {
+    font-size: 24px; /* Heading font size */
+    color: #333; /* Dark color for the heading */
+    margin-bottom: 10px; /* Spacing below the heading */
+}
+
+.user-data-container p {
+    font-size: 16px; /* Paragraph font size */
+    color: #666; /* Lighter color for the paragraph */
+    margin-bottom: 20px; /* Spacing below the paragraph */
+}
+
+.custom-data-grid {
+    border: 1px solid #e0e0e0; /* Light border around the data grid */
+}
+
+.custom-data-grid .MuiDataGrid-toolbar {
+    background-color: #ffffff; /* Toolbar background color */
+    border-bottom: 1px solid #e0e0e0; /* Bottom border for separation */
+}
+
+.custom-data-grid .MuiDataGrid-cell {
+    padding: 10px; /* Cell padding for better spacing */
+}
+
+.custom-data-grid .MuiDataGrid-headerCell {
+    background-color: #e0f7fa; /* Light blue background for header cells */
+    color: #00796b; /* Darker color for header text */
+    font-weight: bold; /* Bold text for headers */
+}

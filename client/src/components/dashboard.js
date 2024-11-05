@@ -1,18 +1,26 @@
+
+
 import React, { useState } from "react";
 import { Box, Button, Typography, Menu, MenuItem, Grid } from "@mui/material";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import jsPDF from "jspdf";
 import Papa from "papaparse";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import MapIcon from "@mui/icons-material/Map";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import ServiceProviderStats from "./serviceprovider"; // Import the ServiceProviderStats component
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import indiaMapData from "../assets/map.json";
 
 const Dashboard = ({ isSidebarExtended }) => {
   const [users, setUsers] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [showServiceProviderStats, setShowServiceProviderStats] = useState(false); // State to control visibility
+  const [showServiceProviderStats, setShowServiceProviderStats] = useState(false);
   const open = Boolean(anchorEl);
+  const [scale, setScale] = useState(1); // State for zoom level
+  const [center, setCenter] = useState([78, 22]); // Center of the map
+  const [isPanning, setIsPanning] = useState(false);
+  const [startCoords, setStartCoords] = useState(null);
+
+
 
   const handleDownloadReports = (event) => {
     setAnchorEl(event.currentTarget);
@@ -52,16 +60,53 @@ const Dashboard = ({ isSidebarExtended }) => {
   };
 
   const handleServiceProviderClick = () => {
-    setShowServiceProviderStats(true); // Show Service Provider Stats
+    setShowServiceProviderStats(true);
   };
 
   const handleBackToDashboard = () => {
-    setShowServiceProviderStats(false); // Go back to dashboard view
+    setShowServiceProviderStats(false);
   };
+
+
+
+
+
+  // Zoom in function
+  const zoomIn = () => {
+    setScale((prevScale) => Math.min(prevScale * 1.2, 5)); // Limit max zoom level
+  };
+
+  // Zoom out function
+  const zoomOut = () => {
+    setScale((prevScale) => Math.max(prevScale / 1.2, 1)); // Limit min zoom level
+  };
+
+  const handleMouseDown = (event) => {
+    setIsPanning(true);
+    setStartCoords([event.clientX, event.clientY]);
+  };
+
+  const handleMouseMove = (event) => {
+    if (isPanning && startCoords) {
+      const dx = event.clientX - startCoords[0];
+      const dy = event.clientY - startCoords[1];
+      setCenter((prevCenter) => [prevCenter[0] - (dx / scale), prevCenter[1] - (dy / scale)]);
+      setStartCoords([event.clientX, event.clientY]);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsPanning(false);
+    setStartCoords(null);
+  };
+
+
+
+
+
 
   return (
     <Box className="dashboard-container" m="20px" sx={{ flexGrow: 1 }}>
-      {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h3">DASHBOARD</Typography>
         <Button
@@ -79,194 +124,140 @@ const Dashboard = ({ isSidebarExtended }) => {
         </Button>
       </Box>
 
-      {/* Dropdown Menu for Download Options */}
       <Menu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
         <MenuItem onClick={downloadPDF}>Download PDF</MenuItem>
         <MenuItem onClick={downloadCSV}>Download CSV</MenuItem>
       </Menu>
 
-      {/* Conditional Rendering of Content */}
+
+
       {!showServiceProviderStats ? (
-        <>
-          {/* Existing Content: User Details & Projects */}
-          <Box display="flex" flexWrap="wrap" gap="20px" mt="20px">
-            {/* User Details & New Sign-ups */}
-            <Box
-              flex="1 1 30%"
-              backgroundColor="#f5f5f5"
-              borderRadius="10px"
-              p="20px"
-              overflow="auto"
-            >
-              <Typography variant="h5" fontWeight="600">
-                User Details 
+        <Grid container spacing={2} mt="20px">
+          <Grid item xs={12} md={5}>
+            <Box height="600px" width="100%" border="1px solid #ddd" borderRadius="10px">
+              <Typography variant="h5" fontWeight="600" mb="10px" align="center">
+                Map of India
               </Typography>
-              <Typography variant="body1" mt="10px">
-                Total users: {users.length}
-              </Typography>
-            </Box>
-
-            {/* Project Section */}
-            <Box
-              flex="1 1 30%"
-              backgroundColor="#f5f5f5"
-              borderRadius="10px"
-              p="20px"
-              overflow="auto"
-            >
-              <Typography variant="h5" fontWeight="600">
-                Project Section
-              </Typography>
-              <Typography variant="body1" mt="10px">
-                Active Projects: 20
-              </Typography>
-            </Box>
-
-            {/* Service Provider Section */}
-            <Box
-              flex="1 1 30%"
-              backgroundColor="#f5f5f5"
-              borderRadius="10px"
-              p="20px"
-              overflow="auto"
-            >
-              <Typography variant="h5" fontWeight="600">
-                Service Provider Section
-              </Typography>
-              <Typography variant="body1" mt="10px">
-                Providers: 15
-              </Typography>
-            </Box>
-
-            {/* AWS Services Data */}
-            <Box
-              flex="1 1 30%"
-              backgroundColor="#f5f5f5"
-              borderRadius="10px"
-              p="20px"
-              overflow="auto"
-            >
-              <Typography variant="h5" fontWeight="600">
-                AWS Services Data
-              </Typography>
-              <Box display="flex" justifyContent="space-between" mt="20px">
-                <Box>
-                  <Typography variant="h6" color="#66bb6a">
-                    12,361
-                  </Typography>
-                  <Typography variant="body1">
-                    Emails Sent
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="h6" color="#66bb6a">
-                    431,225
-                  </Typography>
-                  <Typography variant="body1">
-                    Traffic Received
-                  </Typography>
-                </Box>
+              <Box display="flex" justifyContent="space-between" mb={2}>
+                <Button variant="contained" onClick={zoomIn}>Zoom In</Button>
+                <Button variant="contained" onClick={zoomOut}>Zoom Out</Button>
               </Box>
-            </Box>
-          </Box>
-
-          {/* New Containers for Additional Features */}
-          <Grid container spacing={3} mt="20px">
-            {/* User Locations (with ComposableMap integration) */}
-            <Grid item xs={12}>
-              <Box
-                bgcolor="#f5f5f5"
-                borderRadius="10px"
-                p="20px"
-                sx={{
-                  height: "350px", // Adjusted height to fit map in container
-                  overflow: "hidden", // Prevent overflow
+              <ComposableMap
+                projection="geoMercator"
+                projectionConfig={{
+                  scale: scale * 800, // Adjust scale dynamically
+                  center: [78, 22],
                 }}
+                style={{ width: "100%", height: "100%" }}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
               >
-                <Typography variant="h6">User Locations</Typography>
-                <MapIcon fontSize="large" />
-                <ComposableMap
-                  width={600}  // Adjust the map width to fit within container
-                  height={300} // Reduce height to fit inside the container
-                  style={{ margin: "auto" }}
-                >
-                  <Geographies geography="https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json">
-                    {({ geographies }) =>
-                      geographies.map((geo) => (
-                        <Geography
-                          key={geo.rsmKey}
-                          geography={geo}
-                          fill="#D6D6DA" // Default color
-                          stroke="#FFFFFF" // Border color
-                          onClick={() => console.log(geo.properties.name)} // Example action on click
-                        />
-                      ))
-                    }
-                  </Geographies>
-                </ComposableMap>
-              </Box>
-            </Grid>
+                <Geographies geography={indiaMapData}>
+                  {({ geographies }) =>
+                    geographies.map((geo) => (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        style={{
+                          default: { fill: "#E0F7FA", outline: "#00796B" }, // Outline color and shape
+                          hover: { fill: "#B2EBF2", outline: "#004D40" },
+                          pressed: { fill: "#004D40", outline: "#FFF" },
+                        }}
+                      />
+                    ))
+                  }
+                </Geographies>
+              </ComposableMap>
+            </Box>
+          </Grid>
 
-            {/* Total Service Providers */}
-            <Grid item xs={12} sm={6} md={4}>
-              <Box 
-                bgcolor="#f5f5f5" 
-                borderRadius="10px" 
-                p="20px" 
-                sx={{ cursor: "pointer" }} // Change cursor to pointer
-                onClick={handleServiceProviderClick} // Show Service Provider Stats on click
-              >
-                <Typography variant="h6">Total Service Providers</Typography>
-                <BarChartIcon fontSize="large" />
-                <Typography variant="h5">15</Typography>
-              </Box>
-            </Grid>
 
-            {/* Other Statistics */}
-            <Grid item xs={12} sm={6} md={4}>
-              <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
-                <Typography variant="h6">New Sign-ups</Typography>
-                <Typography variant="h5">{users.length}</Typography>
-              </Box>
-            </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
-              <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
-                <Typography variant="h6">Plan Type Distribution</Typography>
-                <BarChartIcon fontSize="large" />
-                <Typography variant="h5">Basic: 10 | Premium: 5</Typography>
-              </Box>
-            </Grid>
+          <Grid item xs={12} md={7}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={6}>
+                <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
+                  <Typography variant="h6">User Details</Typography>
+                  <Typography variant="body1">Total users: {users.length}</Typography>
+                </Box>
+              </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
-              <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
-                <Typography variant="h6">App Link Clicks</Typography>
-                <Typography variant="h5">250</Typography>
-              </Box>
-            </Grid>
+              <Grid item xs={12} sm={6} md={6}>
+                <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
+                  <Typography variant="h6">Project Section</Typography>
+                  <Typography variant="body1">Active Projects: 20</Typography>
+                </Box>
+              </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
-              <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
-                <Typography variant="h6">Most Used Module</Typography>
-                <Typography variant="h5">Service A</Typography>
-              </Box>
-            </Grid>
+              <Grid item xs={12} sm={6} md={6}>
+                <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px" onClick={handleServiceProviderClick} sx={{ cursor: "pointer" }}>
+                  <Typography variant="h6">Total Service Providers</Typography>
+                  <BarChartIcon fontSize="large" />
+                  <Typography variant="h5">15</Typography>
+                </Box>
+              </Grid>
 
-            <Grid item xs={12} sm={6} md={4}>
-              <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
-                <Typography variant="h6">Payment Invoices</Typography>
-                <Typography variant="h5">15 Invoices</Typography>
-              </Box>
+              <Grid item xs={12} sm={6} md={6}>
+                <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
+                  <Typography variant="h6">AWS Services Data</Typography>
+                  <Box display="flex" justifyContent="space-between">
+                    <Box>
+                      <Typography variant="h6" color="#66bb6a">12,361</Typography>
+                      <Typography variant="body1">Emails Sent</Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant="h6" color="#66bb6a">431,225</Typography>
+                      <Typography variant="body1">Traffic Received</Typography>
+                    </Box>
+                  </Box>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6}>
+                <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
+                  <Typography variant="h6">New Sign-ups</Typography>
+                  <Typography variant="h5">{users.length}</Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6}>
+                <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
+                  <Typography variant="h6">Plan Type Distribution</Typography>
+                  <BarChartIcon fontSize="large" />
+                  <Typography variant="h5">Basic: 10 | Premium: 5</Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6}>
+                <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
+                  <Typography variant="h6">App Link Clicks</Typography>
+                  <Typography variant="h5">250</Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6}>
+                <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
+                  <Typography variant="h6">Most Used Module</Typography>
+                  <Typography variant="h5">Service A</Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={6}>
+                <Box bgcolor="#f5f5f5" borderRadius="10px" p="20px">
+                  <Typography variant="h6">Payment Invoices</Typography>
+                  <Typography variant="h5">15 Invoices</Typography>
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
-        </>
+        </Grid>
       ) : (
-        // Render ServiceProviderStats when state is true
         <Box mt="20px">
           <Button onClick={handleBackToDashboard} variant="contained" color="primary" sx={{ mb: 2 }}>
             Back to Dashboard
           </Button>
-          <ServiceProviderStats /> {/* Render the ServiceProviderStats component here */}
+          <ServiceProviderStats />
         </Box>
       )}
     </Box>

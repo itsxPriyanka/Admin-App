@@ -1,0 +1,33 @@
+.s3profile-container {
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.s3profile-header {
+  margin-bottom: 20px;
+}
+
+.s3profile-header h1 {
+  font-size: 24px;
+  margin: 0;
+  color: #333;
+}
+
+.s3profile-header p {
+  font-size: 16px;
+  color: #666;
+}
+
+.s3profile-data-grid {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-data-grid {
+  border: none;
+}
+
+.toolbar-container {
+  margin-bottom: 10px;
+}

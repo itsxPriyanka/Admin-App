@@ -1,31 +1,69 @@
 .container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-  
-.card {
-    background-color: white; /* White background for card */
-    border-radius: 10px; /* Rounded edges */
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
-    margin: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for card */
-    flex: 1 1 30%; /* Responsive sizing for the cards */
-    text-align: center; /* Center the text */
-}
+  }
   
-.icon-container {
-    background-color: lightblue; /* Light blue background for icon */
-    border-radius: 50%; /* Round the icon container */
-    padding: 10px; /* Space around the icon */
-    display: inline-flex; /* Ensures container size fits icon */
-    align-items: center; /* Center the icon vertically */
-    justify-content: center; /* Center the icon horizontally */
-    width: 60px; /* Set fixed width for container */
-    height: 60px; /* Set fixed height for container */
-}
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    width: 100%;
+  }
   
-.provider-icon {
-    color: black; /* Icon color */
-    font-size: 24px; /* Adjust size of the icon (smaller than before) */
-}
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .icon-container {
+    font-size: 40px;
+    color: #3f51b5; /* Primary color */
+  }
+  
+  .title {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* DataGrid customization (optional) */
+  .MuiDataGrid-root {
+    border: none;
+  }
+  
+  .MuiDataGrid-columnHeader {
+    background-color: #f5f5f5;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .MuiDataGrid-cell {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .MuiDataGrid-footerContainer {
+    background-color: #f5f5f5;
+  }
+  
+  .MuiDataGrid-row {
+    transition: background-color 0.3s;
+  }
+  
+  .MuiDataGrid-row:hover {
+    background-color: #e8f0fe;
+  }
+  

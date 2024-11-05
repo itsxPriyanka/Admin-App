@@ -1,16 +1,14 @@
 
-/* calendar.css */
+
 .calendar-container {
   display: flex;
   flex-direction: column;
-  height: 70vh; /* Ensure the container takes full viewport height */
-  width: 70vw; /* Ensure the container takes full viewport width */
-  padding: 20px; /* Add padding for better spacing */
-  overflow: hidden; /* Hide any overflow within the container */
-
-
+  height: 70vh;
+  width: 70vw; 
+  padding: 20px; 
+  overflow: hidden; 
   justify-content: center; 
-  /* align-items: center;  */
+ 
   box-sizing: border-box; 
 
 
@@ -27,32 +25,60 @@
 .calendar-content {
   display: flex;
   flex: 1;
-  overflow: hidden; /* Hide overflow within the content */
-}
+  overflow: hidden; 
 
 .sidebar {
-  width: 250px; /* Set width of the sidebar */
+  width: 250px;
   padding: 10px;
-  overflow-y: auto; /* Ensure sidebar scrolls if needed */
-  border-right: 1px solid #ddd; /* Add a border to the sidebar */
-  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  overflow-y: auto; 
+  border-right: 1px solid #ddd; 
+  box-sizing: border-box; 
 }
 
 .calendar {
   flex: 1;
   padding: 10px;
-  overflow: hidden; /* Hide overflow inside the calendar */
-  width: 70%; /* Make sure the calendar takes full available width */
+  overflow: hidden; 
+  width: 70%; 
 }
 
 .fc {
-  /* Additional styling for FullCalendar components */
+ 
 }
 
 .fc-header-toolbar {
-  border-bottom: 1px solid #ddd; /* Add a border below the header */
+  border-bottom: 1px solid #ddd; 
 }
 
 .fc-daygrid-day-number {
-  color: #333; /* Set a default color for day numbers */
+  color: #333; 
 }
+}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

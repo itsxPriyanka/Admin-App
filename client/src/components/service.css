@@ -1,4 +1,4 @@
-/* Service.css */
+/* 
 
 .service-container {
     display: flex;
@@ -22,7 +22,7 @@
   }
   
   .service-card:hover {
-    transform: scale(1.05); /* Enlarge card on hover */
+    transform: scale(1.05);
   }
   
   .icon-container {
@@ -49,5 +49,61 @@
     font-size: 14px;
     color: #666;
     margin-top: 5px;
+  }
+   */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   .service-container {
+    display: flex;               /* Use flexbox for layout */
+    flex-wrap: wrap;            /* Allow items to wrap onto the next line */
+    justify-content: space-between; /* Space items evenly */
+    margin: 20px;               /* Optional: Add margin around the container */
+  }
+  
+  .icon-grid {
+    display: flex;              /* Ensure the icon grid is flexbox */
+    flex-wrap: wrap;           /* Allow items to wrap */
+    gap: 20px;                 /* Add gap between items */
+  }
+  
+  .service-card {
+    background-color: #fff;    /* Background for cards */
+    border: 1px solid #ddd;    /* Border for cards */
+    border-radius: 8px;        /* Rounded corners */
+    padding: 20px;             /* Inner padding for cards */
+    text-align: center;        /* Center text */
+    transition: transform 0.3s; /* Smooth hover effect */
+    flex: 0 1 calc(30% - 20px); /* Flexible width with some space */
+    margin: 10px;              /* Adds space around each card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  }
+  
+  .service-card:hover {
+    transform: scale(1.05);    /* Scale up on hover for effect */
+  }
+  
+  .icon-container {
+    margin-bottom: 10px;       /* Space between icon and text */
   }
   

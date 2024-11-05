@@ -1,0 +1,40 @@
+.event-container {
+    padding: 20px;
+  }
+  
+  .icon-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .event-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+  }
+  
+  .event-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .icon-container {
+    font-size: 40px;
+  }
+  
+  .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0 5px;
+  }
+  
+  .card-text {
+    font-size: 14px;
+    color: #555;
+  }
+  
