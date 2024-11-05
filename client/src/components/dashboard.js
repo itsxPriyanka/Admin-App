@@ -10,6 +10,22 @@ import ServiceProviderStats from "./serviceprovider"; // Import the ServiceProvi
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import indiaMapData from "../assets/map.json";
 
+
+
+
+
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+
+
+
 const Dashboard = ({ isSidebarExtended }) => {
   const [users, setUsers] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -19,7 +35,26 @@ const Dashboard = ({ isSidebarExtended }) => {
   const [center, setCenter] = useState([78, 22]); // Center of the map
   const [isPanning, setIsPanning] = useState(false);
   const [startCoords, setStartCoords] = useState(null);
+  const [stateColors, setStateColors] = useState({}); 
 
+
+
+
+
+
+   // Generate colors for each state when component mounts
+   React.useEffect(() => {
+    const colors = {};
+    const states = indiaMapData.features; // Assuming your map data has a 'features' array
+    states.forEach((state) => {
+      colors[state.properties.NAME_1] = getRandomColor(); // Use state name as key for color
+    });
+    setStateColors(colors);
+  }, []);
+
+
+
+  
 
 
   const handleDownloadReports = (event) => {
@@ -134,41 +169,44 @@ const Dashboard = ({ isSidebarExtended }) => {
       {!showServiceProviderStats ? (
         <Grid container spacing={2} mt="20px">
           <Grid item xs={12} md={5}>
-            <Box height="600px" width="100%" border="1px solid #ddd" borderRadius="10px">
+            <Box height="600px" width="100%" border="1px solid #ddd" borderRadius="10px" overflow="hidden">
               <Typography variant="h5" fontWeight="600" mb="10px" align="center">
                 Map of India
               </Typography>
-              <Box display="flex" justifyContent="space-between" mb={2}>
-                <Button variant="contained" onClick={zoomIn}>Zoom In</Button>
-                <Button variant="contained" onClick={zoomOut}>Zoom Out</Button>
+              <Box display="flex" justifyContent="space-between" mb="10px">
+                <Button variant="outlined" onClick={zoomOut}> - </Button>
+                <Button variant="outlined" onClick={zoomIn}> + </Button>
               </Box>
-              <ComposableMap
-                projection="geoMercator"
-                projectionConfig={{
-                  scale: scale * 800, // Adjust scale dynamically
-                  center: [78, 22],
-                }}
-                style={{ width: "100%", height: "100%" }}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-              >
-                <Geographies geography={indiaMapData}>
-                  {({ geographies }) =>
-                    geographies.map((geo) => (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        style={{
-                          default: { fill: "#E0F7FA", outline: "#00796B" }, // Outline color and shape
-                          hover: { fill: "#B2EBF2", outline: "#004D40" },
-                          pressed: { fill: "#004D40", outline: "#FFF" },
-                        }}
-                      />
-                    ))
-                  }
-                </Geographies>
-              </ComposableMap>
+              <Box overflow="auto" height="100%">
+                <ComposableMap
+                  projection="geoMercator"
+                  projectionConfig={{
+                    scale: scale * 800, // Adjust scale for better zooming
+                    center: center,
+                  }}
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  style={{ width: "200%", height: "200%" }} // Allow for larger area to scroll
+                >
+                  <Geographies geography={indiaMapData}>
+                    {({ geographies }) =>
+                      geographies.map((geo) => (
+                        <Geography
+                          key={geo.rsmKey}
+                          geography={geo}
+                          fill={stateColors[geo.properties.NAME_1] || "#B0BEC5"} // Use stateColors map
+                          style={{
+                            default: { outline: "#FF5722", strokeWidth: 0.5 },
+                            hover: { fill: "#CFD8DC", outline: "#FF5722", strokeWidth: 0.5 },
+                            pressed: { fill: "#607D8B", outline: "#FF5722", strokeWidth: 0.5 },
+                          }}
+                        />
+                      ))
+                    }
+                  </Geographies>
+                </ComposableMap>
+              </Box>
             </Box>
           </Grid>
 
